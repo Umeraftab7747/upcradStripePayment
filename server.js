@@ -1,11 +1,12 @@
 require("dotenv").config();
-
 const express = require("express");
+const bodyParser = require("body-parser");
 const app = express();
-
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY, {
 	apiVersion: "2022-08-01",
 });
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.get("/", (req, res) => {
 	res.send("Server Running");
 });
