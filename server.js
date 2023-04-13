@@ -18,12 +18,12 @@ app.get("/config", (req, res) => {
 
 app.post("/create-payment-intent", async (req, res) => {
 	try {
-	  const { price } = req.body;
+	  const { priceit } = req.body;
 
 
 		const paymentIntent = await stripe.paymentIntents.create({
 			currency: "inr",
-			amount: parseInt(price)*1000,
+			amount: parseInt(priceit)*1000,
 			 
 		});
 
