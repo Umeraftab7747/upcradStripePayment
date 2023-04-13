@@ -24,7 +24,7 @@ app.post("/create-payment-intent", async (req, res) => {
 
 		const paymentIntent = await stripe.paymentIntents.create({
 			currency: "inr",
-			amount: parseInt(priceit)*1000,
+			amount: parseInt(priceit)*100,
 			 
 		});
 
