@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
+const cloudinary = require("cloudinary").v2;
 const app = express();
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY, {
 	apiVersion: "2022-08-01",
@@ -16,7 +17,17 @@ app.get("/config", (req, res) => {
 		publishableKey: process.env.STRIPE_PUBLISHABLE_KEY,
 	});
 });
-
+app.post("/imgeUpload", (req, res) => {
+	cloudinary.v2.uploader
+		.upload(req.body.img, {
+			public_id: `${new Date().getTime()}`,
+			background_removal: "cloudinary_ai",
+			notification_url: "https://mysite.example.com/hooks",
+		})
+		.then((result) => {
+			res.send({ data: result, msg: "done" });
+		});
+});
 app.post("/create-payment-intent", async (req, res) => {
 	try {
 	  const { priceit } = req.body;
