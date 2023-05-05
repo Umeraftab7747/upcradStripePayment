@@ -23,7 +23,7 @@ app.get("/config", (req, res) => {
 	});
 });
 app.post("/imgeUpload", (req, res) => {
-	cloudinary.v2.uploader
+	cloudinary.uploader
 		.upload(req.body.img, {
 			public_id: `${new Date().getTime()}`,
 			background_removal: "cloudinary_ai",
