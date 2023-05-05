@@ -2,6 +2,11 @@ require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const cloudinary = require("cloudinary").v2;
+cloudinary.config({
+	cloud_name: process.env.CLOUD_NAME,
+	api_key: process.env.API_KEY,
+	api_secret: process.env.API_SECRET,
+});
 const app = express();
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY, {
 	apiVersion: "2022-08-01",
@@ -30,13 +35,11 @@ app.post("/imgeUpload", (req, res) => {
 });
 app.post("/create-payment-intent", async (req, res) => {
 	try {
-	  const { priceit } = req.body;
-
+		const { priceit } = req.body;
 
 		const paymentIntent = await stripe.paymentIntents.create({
 			currency: "inr",
-			amount: parseInt(priceit)*100,
-			 
+			amount: parseInt(priceit) * 100,
 		});
 
 		// Send publishable key and PaymentIntent details to client
