@@ -1,14 +1,9 @@
 require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
-const cloudinary = require("cloudinary");
 const { removeBackgroundFromImageBase64 } = require("remove.bg");
 const cors = require("cors");
-cloudinary.config({
-	cloud_name: "dpjk8xcld",
-	api_key: "988111459938154",
-	api_secret: "1IcvS7VzQ8Ueo7AEcPPE3lo2UAw",
-});
+
 const app = express();
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY, {
 	apiVersion: "2022-08-01",
@@ -32,7 +27,7 @@ app.post("/imgeUpload", (req, res) => {
 
 	removeBackgroundFromImageBase64({
 		base64img: url,
-		apiKey: "yxVcopn9DNPNZ3DYsQaYWe4n",
+		apiKey: `${process.env.REMOVEAPI}`,
 		size: "regular",
 		type: "person",
 	})
