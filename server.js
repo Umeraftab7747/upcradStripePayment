@@ -3,7 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cloudinary = require("cloudinary");
 const { removeBackgroundFromImageBase64 } = require("remove.bg");
-
+const cors = require("cors");
 cloudinary.config({
 	cloud_name: "dpjk8xcld",
 	api_key: "988111459938154",
@@ -13,6 +13,7 @@ const app = express();
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY, {
 	apiVersion: "2022-08-01",
 });
+app.use(cors());
 app.use(bodyParser.json({ limit: "200mb" }));
 app.use(bodyParser.urlencoded({ limit: "200mb", extended: true }));
 app.get("/", (req, res) => {
