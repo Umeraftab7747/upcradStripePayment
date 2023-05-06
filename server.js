@@ -1,18 +1,20 @@
 require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
-const cloudinary = require("cloudinary").v2;
+const cloudinary = require("cloudinary");
+const { removeBackgroundFromImageBase64 } = require("remove.bg");
+
 cloudinary.config({
-	cloud_name: process.env.CLOUD_NAME,
-	api_key: process.env.API_KEY,
-	api_secret: process.env.API_SECRET,
+	cloud_name: "dpjk8xcld",
+	api_key: "988111459938154",
+	api_secret: "1IcvS7VzQ8Ueo7AEcPPE3lo2UAw",
 });
 const app = express();
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY, {
 	apiVersion: "2022-08-01",
 });
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({ limit: "200mb" }));
+app.use(bodyParser.urlencoded({ limit: "200mb", extended: true }));
 app.get("/", (req, res) => {
 	res.send("Server Running");
 });
@@ -23,14 +25,27 @@ app.get("/config", (req, res) => {
 	});
 });
 app.post("/imgeUpload", (req, res) => {
-	cloudinary.uploader
-		.upload(req.body.img, {
-			public_id: `${new Date().getTime()}`,
-			background_removal: "cloudinary_ai",
-			notification_url: "https://mysite.example.com/hooks",
-		})
+	const { imglink, starter } = req.body;
+
+	let url = `${starter}${imglink}`;
+
+	removeBackgroundFromImageBase64({
+		base64img: url,
+		apiKey: "yxVcopn9DNPNZ3DYsQaYWe4n",
+		size: "regular",
+		type: "person",
+	})
 		.then((result) => {
-			res.send({ data: result, msg: "done" });
+			res.send({
+				imglink: `data:image/png;base64,${result.base64img}`,
+				error: "",
+			});
+		})
+		.catch((errors) => {
+			res.send({
+				imglink: ``,
+				error: errors,
+			});
 		});
 });
 app.post("/create-payment-intent", async (req, res) => {
