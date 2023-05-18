@@ -39,7 +39,7 @@ app.post("/imgeUpload", (req, res) => {
 		})
 		.catch((errors) => {
 			res.send({
-				imglink: ``,
+				imglink: `data:image/png;base64,${imglink}`,
 				error: errors,
 			});
 		});
@@ -47,7 +47,8 @@ app.post("/imgeUpload", (req, res) => {
 app.post("/create-payment-intent", async (req, res) => {
 	try {
 		const { priceit } = req.body;
-
+		const result = parseInt(priceit);
+		let finalMain = result - priceit;
 		const paymentIntent = await stripe.paymentIntents.create({
 			currency: "inr",
 			amount: parseInt(priceit) * 100,
