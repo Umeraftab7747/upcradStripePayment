@@ -50,7 +50,7 @@ app.post("/create-payment-intent", async (req, res) => {
 		const result = parseInt(priceit);
 		let finalMain = result - priceit;
 		const paymentIntent = await stripe.paymentIntents.create({
-			currency: "inr",
+			currency: "EUR",
 			amount: parseInt(priceit) * 100,
 		});
 
