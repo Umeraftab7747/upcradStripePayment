@@ -8,9 +8,7 @@ const app = express();
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY, {
 	apiVersion: "2022-08-01",
 });
-app.use(cors({
-"*"
-}));
+app.use(cors({origin:"*"}));
 app.use(bodyParser.json({ limit: "200mb" }));
 app.use(bodyParser.urlencoded({ limit: "200mb", extended: true }));
 app.get("/", (req, res) => {
